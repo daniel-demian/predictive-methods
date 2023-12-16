@@ -8,7 +8,7 @@ from matplotlib.gridspec import GridSpec
 
 #metoda pre precitanie dát z csv suboru
 def read_data():
-    data = pd.read_csv("./data/new_data.csv", delimiter=';')
+    data = pd.read_csv("../data/new_data.csv", delimiter=';')
     data = data.drop(data.columns[-2], axis=1)
     corr_data = data.corr()
     return data, corr_data
