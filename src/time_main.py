@@ -6,7 +6,7 @@ from matplotlib.gridspec import GridSpec
 
 #metoda pre precitanie dát z csv suboru
 def read_data():
-    data = pd.read_csv("../data/new_data.csv", delimiter=';')
+    data = pd.read_csv("../data/data.csv", delimiter=';', on_bad_lines='skip')
     data = data.drop(data.columns[-2], axis=1)
     corr_data = data.corr()
     return data, corr_data
@@ -30,12 +30,13 @@ def update_regplot(ax, data, x, y, title, color, corrcoef):
     else:
         order = 2
     sns.regplot(x=x, y=y, data=data, ax=ax, order=order, color=color,
-                line_kws={'color': 'red', 'linewidth': 1}, scatter_kws={'s': 10}, fit_reg=True)
+                line_kws={'color': 'red', 'linewidth': 1}, scatter_kws={'s': 5}, fit_reg=True)
     ax.set_title(title)
 
 
 if __name__ == "__main__":
     plt.ion()
+    obrazok = 250
     corr_data = None
     data, corr_data = read_data()
     matrix = np.triu(corr_data)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
                 annot_kws={'size': 8}, fmt=".2f", mask=matrix, cmap='coolwarm', vmin=-1, vmax=1)
 
     while True:
-        data, corr_data = recalculate()
+        #data, corr_data = recalculate()
 
         # odstranenie duplikatov a diagonaly, nastavenie na NaN
         # zoradenie od najvacsieho po najmensie .abs() zaruci aj antikorelaciu
@@ -75,11 +76,12 @@ if __name__ == "__main__":
         # print(top_corr_values.index[0][0], top_corr_values.index[0][1], top_corr_values.iloc[0])
         reg_ax = [ax2_1, ax2_2, ax2_3, ax2_4]
         for i in range(0, 4):
-            update_regplot(reg_ax[i], data, x=top_corr_values.index[i][1], y=top_corr_values.index[i][0], color="blue",
+            update_regplot(reg_ax[i], data, x=top_corr_values.index[i][1], y=top_corr_values.index[i][0], color="black",
                            title=f'Regression Plot (Corr={top_corr_values.iloc[i]:.3f})', corrcoef=top_corr_values.iloc[i])
 
-        plt.pause(10)
-
+        plt.savefig(f'../pictures/time/time{obrazok}.png', dpi=600)
+        plt.pause(100)
+        obrazok += 1
         ax1.clear()
         for ax2 in reg_ax:
             ax2.clear()

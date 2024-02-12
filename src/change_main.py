@@ -8,7 +8,7 @@ from matplotlib.gridspec import GridSpec
 
 #metoda pre precitanie dát z csv suboru
 def read_data():
-    data = pd.read_csv("../data/new_data.csv", delimiter=';')
+    data = pd.read_csv("../data/new_data.csv", delimiter=';', on_bad_lines='skip')
     data = data.drop(data.columns[-2], axis=1)
     corr_data = data.corr()
     return data, corr_data
@@ -32,7 +32,7 @@ def update_regplot(ax, data, x, y, title, color, corrcoef):
     else:
         order = 2
     sns.regplot(x=x, y=y, data=data, ax=ax, order=order, color=color,
-                line_kws={'color': 'red', 'linewidth': 1}, scatter_kws={'s': 10}, fit_reg=True)
+                line_kws={'color': 'red', 'linewidth': 1}, scatter_kws={'s': 5}, fit_reg=True)
     ax.set_title(title)
 
 #funkcia vrati rozdiel a x, y (pressure, time) aby sa vedel vykreslit graf
@@ -129,20 +129,19 @@ if __name__ == "__main__":
         # print(top_corr_values.index[0][0], top_corr_values.index[0][1], top_corr_values.iloc[0])
         reg_ax = [ax2_1, ax2_2, ax2_3]
         for i in range(0, 3):
-            update_regplot(reg_ax[i], data, x=top_corr_values.index[i][1], y=top_corr_values.index[i][0], color="blue",
+            update_regplot(reg_ax[i], data, x=top_corr_values.index[i][1], y=top_corr_values.index[i][0], color="black",
                            title=f'Regression Plot (Corr={top_corr_values.iloc[i]:.3f})', corrcoef=top_corr_values.iloc[i])
 
         update_regplot(ax2_4, data, x=corr_values.index[change_index][1], y=corr_values.index[change_index][0],
-                       color="blue",
+                       color="black",
                        title=f'Regression Plot (Corr={corr_values.iloc[change_index]:.3f})',
                        corrcoef=corr_values.iloc[change_index])
         if changed:
-            text.set_text(f'Zmena inciovaná: x={corr_values.index[change_index][1]}, y={corr_values.index[change_index][0]}, '
-                               f'Pôvodná hodnota:{old_value:.3f}, Nová hodnota: {corr_values.iloc[change_index]:.3f}, zmena o: {changed:.3f}')
-
+            text.set_text(f'Change initiated by: x={corr_values.index[change_index][1]}, y={corr_values.index[change_index][0]}, '
+                               f'Old value:{old_value:.3f}, New value: {corr_values.iloc[change_index]:.3f}, changed by: {changed:.3f}')
         old_index = change_index
         #po 5% záznamoch sa prepočíta znova percentage_rate(5, len(data-1))
-        plt.pause(5)
+        plt.pause(10)
         text.set_text('')
         ax1.clear()
         for ax2 in reg_ax:
