@@ -6,7 +6,7 @@ from matplotlib.gridspec import GridSpec
 
 #metoda pre precitanie dát z csv suboru
 def read_data():
-    data = pd.read_csv("../data/data.csv", delimiter=';', on_bad_lines='skip')
+    data = pd.read_csv("../data/new_data.csv", delimiter=';', on_bad_lines='skip')
     data = data.drop(data.columns[-2], axis=1)
     corr_data = data.corr()
     return data, corr_data
@@ -79,8 +79,8 @@ if __name__ == "__main__":
             update_regplot(reg_ax[i], data, x=top_corr_values.index[i][1], y=top_corr_values.index[i][0], color="black",
                            title=f'Regression Plot (Corr={top_corr_values.iloc[i]:.3f})', corrcoef=top_corr_values.iloc[i])
 
-        plt.savefig(f'../pictures/time/time{obrazok}.png', dpi=600)
-        plt.pause(100)
+        #plt.savefig(f'../pictures/time/time{obrazok}.png', dpi=600)
+        plt.pause(10)
         obrazok += 1
         ax1.clear()
         for ax2 in reg_ax:

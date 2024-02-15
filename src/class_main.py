@@ -30,8 +30,9 @@ def recalculate():
 def update_heatmap(ax, data, matrix, title):
     sns.heatmap(data, ax=ax, cbar=False, annot=True,
                 annot_kws={'size': 8}, fmt=".2f", mask=matrix, cmap='coolwarm', vmin=-1, vmax=1)
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=25)
-    ax.set_title(title, size=15, weight='bold')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=25, fontsize=8)
+    ax.set_yticklabels(ax.get_yticklabels(), fontsize=8)
+    ax.set_title(title, size=10, weight='bold')
 
 #metoda pre update regplotu
 def update_regplot(ax, data, x, y, title, color, corrcoef):
@@ -41,7 +42,12 @@ def update_regplot(ax, data, x, y, title, color, corrcoef):
         order = 2
     sns.regplot(x=x, y=y, data=data, ax=ax, order=order, color=color,
                 line_kws={'color': 'red', 'linewidth': 1}, scatter_kws={'s': 5}, fit_reg=True)
-    ax.set_title(title)
+    ax.set_title(title, size=10)
+    ax.set_xticklabels(ax.get_xticklabels(), fontsize=8)
+    ax.set_yticklabels(ax.get_yticklabels(), fontsize=8)
+    ax.set_xlabel(ax.get_xlabel(), fontsize=8)
+    ax.set_ylabel(ax.get_ylabel(), fontsize=8)
+
 
 #funkcia vrati rozdiel a x, y (pressure, time) aby sa vedel vykreslit graf
 def find_class_change(old_values, new_values):
@@ -100,6 +106,7 @@ if __name__ == "__main__":
     data, corr_data = read_data()
     changed = False
     old_corr_data = corr_data
+    obrazok = 0
 
     plt.ion()
     # Create a 2x4 grid of subplots
@@ -116,7 +123,7 @@ if __name__ == "__main__":
 
     plt.subplots_adjust(wspace=0.6, hspace=0.6)
 
-    text = fig.text(0.5, 0.0001, '', ha='center', fontsize=10)
+    text = fig.text(0.5, 0.0001, '', ha='center', fontsize=8)
 
     # heatmap init
     sns.heatmap(corr_data, ax=ax1, cbar=True, annot=True,
@@ -157,12 +164,14 @@ if __name__ == "__main__":
                        corrcoef=corr_values.iloc[change_index])
         if changed:
             text.set_text(f'Change initiaded by: x={corr_values.index[change_index][1]}, y={corr_values.index[change_index][0]}, '
-                               f'Old class:{old_value}, New class: {changed}, changed by: {abs(int(old_value)-int(changed))}')
+                               f'Old class:{old_value}, New class: {changed}, changed by: {abs(int(old_value)-int(changed))}\n')
 
         old_index = change_index
         #po 5% záznamoch sa prepočíta znova percentage_rate(5, len(data-1))
+        plt.savefig(f'../pictures/class/class{obrazok}.png', dpi=600)
         plt.pause(10)
         text.set_text('')
+        obrazok += 1
         ax1.clear()
         for ax2 in reg_ax:
             ax2.clear()
