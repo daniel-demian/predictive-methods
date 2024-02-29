@@ -36,7 +36,7 @@ def update_regplot(ax, data, x, y, title, color, corrcoef):
 
 if __name__ == "__main__":
     plt.ion()
-    obrazok = 250
+    obrazok = 0
     corr_data = None
     data, corr_data = read_data()
     matrix = np.triu(corr_data)
