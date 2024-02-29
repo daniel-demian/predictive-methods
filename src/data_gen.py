@@ -1,13 +1,3 @@
-"""
-import csv
-import time
-
-out = csv.writer(open("../data/new_data.csv", "w", newline='', buffering=1))
-for row in csv.reader(open("../data/data.csv", "r")):
-    out.writerow(row)
-    print(row)
-    time.sleep(1)
-"""
 import csv
 import threading
 import time
@@ -49,7 +39,7 @@ def process_rows(start_index, step):
                 time.sleep(0.3)
                 for _ in range(step - 1):
                     next(reader, None)
-num_threads = 4
+num_threads = 8
 
 # Create and start threads
 threads = []
