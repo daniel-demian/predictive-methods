@@ -100,7 +100,7 @@ def check_if_changed(old, new, old_index):
     return False, old_index, old_class
 
 def percentage_rate(percent, data_len):
-    return math.floor((percent * data_len) / 100.0)
+    return (math.floor((percent * data_len) / 100.0))*0.1
 
 if __name__ == "__main__":
     data, corr_data = read_data()
@@ -168,8 +168,8 @@ if __name__ == "__main__":
 
         old_index = change_index
         #po 5% záznamoch sa prepočíta znova percentage_rate(5, len(data-1))
-        plt.savefig(f'../pictures/class/class{obrazok}.png', dpi=600)
-        plt.pause(10)
+        #plt.savefig(f'../pictures/class/class{obrazok}.png', dpi=600)
+        plt.pause(percentage_rate(5, len(data-1)))
         text.set_text('')
         obrazok += 1
         ax1.clear()
