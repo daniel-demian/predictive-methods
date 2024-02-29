@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 annot_kws={'size': 8}, fmt=".2f", mask=matrix, cmap='coolwarm', vmin=-1, vmax=1)
 
     while True:
-        #data, corr_data = recalculate()
+        data, corr_data = recalculate()
 
         # odstranenie duplikatov a diagonaly, nastavenie na NaN
         # zoradenie od najvacsieho po najmensie .abs() zaruci aj antikorelaciu
